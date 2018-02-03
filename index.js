@@ -2,7 +2,7 @@
 
 const createQueue = require('queue')
 
-const setup = (fetchJourneys, tasks, onResult, opt = {}) => {
+const setup = (fetchJourneys, tasks, opt = {}) => {
 	if ('function' !== typeof fetchJourneys) {
 		throw new Error('fetchJourneys must be a function.')
 	}
@@ -13,9 +13,6 @@ const setup = (fetchJourneys, tasks, onResult, opt = {}) => {
 		if ('object' !== typeof t || t === null || Array.isArray(t)) {
 			throw new Error('every t must be an object')
 		}
-	}
-	if ('function' !== typeof onResult) {
-		throw new Error('onResult must be a function.')
 	}
 	if ('object' !== typeof opt || opt === null || Array.isArray(opt)) {
 		throw new Error('opt must be an object')
@@ -34,55 +31,58 @@ const setup = (fetchJourneys, tasks, onResult, opt = {}) => {
 
 			input.started = Date.now()
 			fetchJourneys(input.from, input.to, opts)
-			.then((journeys) => {
-				onResult(null, journeys, input)
-				cb(null)
-			})
-			.catch((err) => {
-				onResult(err, null, null)
-				cb(err)
-			})
+			.then((journeys) => cb(null, journeys))
+			.catch(cb)
 		}
 		return fetch
 	}
 
 	let iterations = 0
-	const run = (onDone) => {
-		if ('function' !== typeof onDone) {
-			throw new Error('onDone must be a function.')
+	const run = (onJobDone, onEnd) => {
+		if ('function' !== typeof onJobDone) {
+			throw new Error('onJobDone must be a function.')
+		}
+		if ('function' !== typeof onEnd) {
+			throw new Error('onEnd must be a function.')
 		}
 
-		const iteration = iterations++
+		const iteration = ++iterations
 		const jobs = new WeakSet() // todo: ponyfill?
 		let jobsLeft = 0
 
 		for (let task of tasks) {
-			const job = createFetch({
+			const input = {
 				iteration,
 				from: task.from,
 				to: task.to,
 				when: task.when(Date.now()),
 				opts: task.opts
-			})
+			}
+			const job = createFetch(input)
+			job.input = input
+
 			queue.push(job)
 			jobs.add(job)
 			jobsLeft++
 		}
 
-		const onJobDone = (_, job) => {
-			if (jobs.has(job)) {
-				jobs.delete(job)
-				if (--jobsLeft === 0) {
-					queue.removeListener('success', onJobDone)
-					queue.removeListener('error', onJobDone)
-					queue.removeListener('timeout', onJobDone)
-					setImmediate(onDone, iteration)
-				}
+		const _jobDone = (err, journeys, job) => {
+			if (!jobs.has(job)) return null
+			jobs.delete(job)
+			onJobDone(err, journeys, job.input, iteration)
+			if (--jobsLeft === 0) {
+				queue.removeListener('success', onSuccess)
+				queue.removeListener('error', onError)
+				queue.removeListener('timeout', onTimeout)
+				setImmediate(onEnd, iteration)
 			}
 		}
-		queue.on('success', onJobDone)
-		queue.on('error', onJobDone)
-		queue.on('timeout', onJobDone)
+		const onSuccess = (journeys, job) => _jobDone(null, journeys, job)
+		queue.on('success', onSuccess)
+		const onError = (err, job) => _jobDone(err, null, job)
+		queue.on('error', onError)
+		const onTimeout = (_, job) => _jobDone(new Error('timeout'), null, job)
+		queue.on('timeout', onTimeout)
 	}
 	return run
 }
