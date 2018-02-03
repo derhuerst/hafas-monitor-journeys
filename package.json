@@ -1,0 +1,32 @@
+{
+	"name": "hafas-monitor-journeys",
+	"description": "Use any HAFAS API to monitor journeys from A to B.",
+	"version": "0.1.0",
+	"main": "index.js",
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"hafas",
+		"public transport",
+		"transit"
+	],
+	"author": "Jannis R <mail@jannisr.de>",
+	"homepage": "https://github.com/derhuerst/hafas-monitor-journeys",
+	"repository": "derhuerst/hafas-monitor-journeys",
+	"bugs": "https://github.com/derhuerst/hafas-monitor-journeys/issues",
+	"license": "ISC",
+	"engines": {
+		"node": ">=6"
+	},
+	"dependencies": {
+	},
+	"devDependencies": {
+		"tap-min": "^1.2.2",
+		"tape": "^4.8.0"
+	},
+	"scripts": {
+		"test": "env NODE_ENV=dev node test.js | tap-min",
+		"prepublishOnly": "npm test"
+	}
+}
