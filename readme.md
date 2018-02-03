@@ -18,7 +18,45 @@ npm install hafas-monitor-journeys
 ## Usage
 
 ```js
-todo
+const hafas = require('vbb-hafas')
+const monitor = require('hafas-monitor-journeys')
+
+const leinestr = '900000079201'
+const schönleinstr = '900000016201'
+
+const tasks = [{
+	from: leinestr,
+	to: schönleinstr,
+	when: t => t, // query for the current point in time
+}, {
+	from: leinestr,
+	to: schönleinstr,
+	when: t => t + 10 * 60 * 1000 // query 10 minutes ahead
+}]
+
+const onJobDone = (err, journeys, job, iteration) => {
+	if (err) return console.error(err)
+
+	const ahead = Math.round((job.when - job.started) / 1000)
+	console.log(
+		'iteration ' + iteration,
+		ahead + 's ahead',
+		journeys.length + ' journeys'
+	)
+}
+
+const onEnd = (iteration) => {
+	console.log('iteration ' + iteration + ' done')
+}
+
+const run = monitor(hafas.journeys, tasks)
+run(onJobDone, onEnd)
+```
+
+```
+iteration 1 0s ahead 5 journeys
+iteration 1 600s ahead 5 journeys
+iteration 1 done
 ```
 
 

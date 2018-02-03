@@ -23,7 +23,6 @@
 		"queue": "^4.4.2"
 	},
 	"devDependencies": {
-		"luxon": "^0.4.0",
 		"tap-min": "^1.2.2",
 		"tape": "^4.8.0",
 		"vbb-hafas": "^4.1.0"

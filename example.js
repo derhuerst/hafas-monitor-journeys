@@ -1,35 +1,29 @@
 'use strict'
 
-const {DateTime} = require('luxon')
 const hafas = require('vbb-hafas')
 
-const setup = require('.')
-
-const later = (delta) => (t) => {
-	return DateTime.fromMillis(t, {
-		zone: 'Europe/Berlin',
-		locale: 'de-DE'
-	})
-	.plus(delta)
-	.valueOf()
-}
+const monitor = require('.')
 
 const potsdamHbf = '900000230999'
 const ostbahnhof = '900000120005'
 const leinestr = '900000079201'
 const schönleinstr = '900000016201'
+const ahead = delta => t => t + delta
+const minute = 60 * 1000
+const day = 24 * 60 * minute
+
 const tasks = [{
 	from: potsdamHbf,
 	to: ostbahnhof,
-	when: later({days: 1})
+	when: ahead(1 * day)
 }, {
 	from: potsdamHbf,
 	to: ostbahnhof,
-	when: later({days: 2})
+	when: ahead(2 * day)
 }, {
 	from: potsdamHbf,
 	to: ostbahnhof,
-	when: later({days: 3})
+	when: ahead(3 * day)
 }, {
 	from: leinestr,
 	to: schönleinstr,
@@ -37,18 +31,18 @@ const tasks = [{
 }, {
 	from: leinestr,
 	to: schönleinstr,
-	when: later({minutes: 10})
+	when: ahead(10 * minute)
 }, {
 	from: leinestr,
 	to: schönleinstr,
-	when: later({minutes: 20})
+	when: ahead(20 * minute)
 }]
 
-const onResult = (err, journeys, job) => {
+const onJobDone = (err, journeys, job, iteration) => {
 	if (err) return console.error(err)
 
 	console.log(
-		job.iteration,
+		iteration,
 		job.from,
 		job.to,
 		new Date(job.when),
@@ -57,10 +51,10 @@ const onResult = (err, journeys, job) => {
 	)
 }
 
-const onDone = (iteration) => {
+const onEnd = (iteration) => {
 	console.log('iteration ' + iteration + ' done!')
 }
 
-const run = setup(hafas.journeys, tasks, onResult)
-setTimeout(run, 100, onDone)
-setTimeout(run, 200, onDone)
+const run = monitor(hafas.journeys, tasks)
+setTimeout(run, 100, onJobDone, onEnd)
+setTimeout(run, 200, onJobDone, onEnd)
