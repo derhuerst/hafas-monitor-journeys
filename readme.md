@@ -1,5 +1,7 @@
 # hafas-monitor-journeys
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/derhuerst/hafas-monitor-journeys.svg)](https://greenkeeper.io/)
+
 **Use any HAFAS API to monitor journeys from A to B.**
 
 [![npm version](https://img.shields.io/npm/v/hafas-monitor-journeys.svg)](https://www.npmjs.com/package/hafas-monitor-journeys)
