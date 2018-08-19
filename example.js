@@ -1,6 +1,6 @@
 'use strict'
 
-const hafas = require('vbb-hafas')
+const createHafas = require('vbb-hafas')
 
 const monitor = require('.')
 
@@ -55,6 +55,7 @@ const onEnd = (iteration) => {
 	console.log('iteration ' + iteration + ' done!')
 }
 
+const hafas = createHafas('hafas-monitor-departures example')
 const run = monitor(hafas.journeys, tasks)
 setTimeout(run, 100, onJobDone, onEnd)
 setTimeout(run, 200, onJobDone, onEnd)

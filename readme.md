@@ -18,7 +18,7 @@ npm install hafas-monitor-journeys
 ## Usage
 
 ```js
-const hafas = require('vbb-hafas')
+const createHafas = require('vbb-hafas')
 const monitor = require('hafas-monitor-journeys')
 
 const leinestr = '900000079201'
@@ -49,6 +49,7 @@ const onEnd = (iteration) => {
 	console.log('iteration ' + iteration + ' done')
 }
 
+const hafas = createHafas('my-awesome-program')
 const run = monitor(hafas.journeys, tasks)
 run(onJobDone, onEnd)
 ```

@@ -27,7 +27,7 @@ const setup = (fetchJourneys, tasks, opt = {}) => {
 	const createFetch = (input) => {
 		const fetch = (cb) => {
 			const opts = Object.assign({}, input.opts)
-			opts.when = new Date(input.when)
+			opts.departure = new Date(input.when)
 
 			input.started = Date.now()
 			fetchJourneys(input.from, input.to, opts)
