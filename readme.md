@@ -6,6 +6,7 @@
 [![build status](https://api.travis-ci.org/derhuerst/hafas-monitor-journeys.svg?branch=master)](https://travis-ci.org/derhuerst/hafas-monitor-journeys)
 ![ISC-licensed](https://img.shields.io/github/license/derhuerst/hafas-monitor-journeys.svg)
 [![chat on gitter](https://badges.gitter.im/derhuerst.svg)](https://gitter.im/derhuerst)
+[![support me on Patreon](https://img.shields.io/badge/support%20me-on%20patreon-fa7664.svg)](https://patreon.com/derhuerst)
 
 
 ## Installing

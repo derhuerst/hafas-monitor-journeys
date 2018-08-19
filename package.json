@@ -1,7 +1,7 @@
 {
 	"name": "hafas-monitor-journeys",
 	"description": "Use any HAFAS API to monitor journeys from A to B.",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"main": "index.js",
 	"files": [
 		"index.js",
