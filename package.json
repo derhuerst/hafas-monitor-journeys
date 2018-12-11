@@ -21,7 +21,7 @@
 		"node": ">=6"
 	},
 	"dependencies": {
-		"queue": "^4.4.2"
+		"queue": "^5.0.0"
 	},
 	"devDependencies": {
 		"tap-min": "^1.2.2",
