@@ -1,35 +1,39 @@
 {
-	"name": "hafas-monitor-journeys",
-	"description": "Use any HAFAS API to monitor journeys from A to B.",
-	"version": "1.0.0",
-	"main": "index.js",
-	"files": [
-		"index.js",
-		"to-file.js"
-	],
-	"keywords": [
-		"hafas",
-		"public transport",
-		"transit"
-	],
-	"author": "Jannis R <mail@jannisr.de>",
-	"homepage": "https://github.com/derhuerst/hafas-monitor-journeys",
-	"repository": "derhuerst/hafas-monitor-journeys",
-	"bugs": "https://github.com/derhuerst/hafas-monitor-journeys/issues",
-	"license": "ISC",
-	"engines": {
-		"node": ">=6"
-	},
-	"dependencies": {
-		"queue": "^6.0.0"
-	},
-	"devDependencies": {
-		"tap-min": "^1.2.2",
-		"tape": "^5.0.0",
-		"vbb-hafas": "^5.0.0"
-	},
-	"scripts": {
-		"test": "env NODE_ENV=dev node test.js | tap-min",
-		"prepublishOnly": "npm test"
-	}
+  "name": "hafas-monitor-journeys",
+  "description": "Use any HAFAS API to monitor journeys from A to B.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "to-file.js"
+  ],
+  "keywords": [
+    "hafas",
+    "public transport",
+    "transit"
+  ],
+  "author": "Jannis R <mail@jannisr.de>",
+  "homepage": "https://github.com/derhuerst/hafas-monitor-journeys",
+  "repository": "derhuerst/hafas-monitor-journeys",
+  "bugs": "https://github.com/derhuerst/hafas-monitor-journeys/issues",
+  "license": "ISC",
+  "engines": {
+    "node": ">=6"
+  },
+  "dependencies": {
+    "queue": "^6.0.0",
+    "snyk": "^1.319.0"
+  },
+  "devDependencies": {
+    "tap-min": "^1.2.2",
+    "tape": "^5.0.0",
+    "vbb-hafas": "^5.0.0"
+  },
+  "scripts": {
+    "test": "env NODE_ENV=dev node test.js | tap-min",
+    "prepublishOnly": "npm test",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
